@@ -27,7 +27,7 @@ jobs:
 
   zip_s3:
     name: Generate deployment package
-    #needs: build_docker_images
+    # needs: build_docker_images
     run: zip -r deploy.zip . -x '*.git*'
 
   publish:
