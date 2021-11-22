@@ -10,11 +10,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker build -t arnar-thor/multi-client -f ./client/Dockerfile.dev .
-      - run: docker run -e CI=true arnar-thor/multi-client npm test
-      - run: docker build -t arnar-thor/multi-nginx -f ./nginx/Dockerfile .
-      - run: docker build -t arnar-thor/multi-server -f ./server/Dockerfile .
-      - run: docker build -t arnar-thor/multi-worker -f ./worker/Dockerfile .
+      - run: docker build -t arnartheviking/multi-client -f ./client/Dockerfile.dev .
+      - run: docker run -e CI=true arnartheviking/multi-client npm test
+      - run: docker build -t arnartheviking/multi-nginx -f ./nginx/Dockerfile .
+      - run: docker build -t arnartheviking/multi-server -f ./server/Dockerfile .
+      - run: docker build -t arnartheviking/multi-worker -f ./worker/Dockerfile .
+      - run: docker push arnartheviking/multi-client
+      - run: docker push arnartheviking/multi-nginx
+      - run: docker push arnartheviking/multi-server
+      - run: docker push arnartheviking/multi-worker
 
       #- name: createimages
         #run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
@@ -25,8 +29,8 @@ jobs:
         #run: docker build -t arnar-thor/multi-docker -f server/Dockerfile .
         #run: docker build -t arnar-thor/multi-docker -f worker/Dockerfile .
 
-      - name: Generate deployment package
-        run: zip -r deploy.zip . -x '*.git*'
+      #- name: Generate deployment package
+      #  run: zip -r deploy.zip . -x '*.git*'
 
     #  - name: Deploy to EB
     #    uses: einaregilsson/beanstalk-deploy@v18
