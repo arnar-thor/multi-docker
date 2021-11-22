@@ -16,6 +16,7 @@ jobs:
       - name: createimages
         #run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         #run: docker build -t arnar-thor/multi-docker -f client/Dockerfile .
+        runs-on: ubuntu-latest
         steps:
           - uses: actions/checkout@v2
           - run: docker build -t arnar-thor/multi-docker -f nginx/Dockerfile .
