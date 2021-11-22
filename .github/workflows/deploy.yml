@@ -13,33 +13,26 @@ jobs:
       - run: docker build -t arnar-thor/multi-docker -f Dockerfile.dev .
       - run: docker run -e CI=true arnar-thor/multi-docker npm test
 
-  #build_docker_images:
-    #name: createimages
-    #needs: build_test
-    #runs-on: ubuntu-latest
-    #steps:
-    #  - uses: actions/checkout@v2
-    #  - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-    #  - run: docker build -t arnar-thor/multi-docker -f client/Dockerfile .
-    #  - run: docker build -t arnar-thor/multi-docker -f nginx/Dockerfile .
-    #  - run: docker build -t arnar-thor/multi-docker -f server/Dockerfile .
-    #  - run: docker build -t arnar-thor/multi-docker -f worker/Dockerfile .
+      - name: createimages
+        #run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        #run: docker build -t arnar-thor/multi-docker -f client/Dockerfile .
+        steps:
+         - run: docker build -t arnar-thor/multi-docker -f nginx/Dockerfile .
+         - run: docker build -t arnar-thor/multi-docker -f server/Dockerfile .
+         - run: docker build -t arnar-thor/multi-docker -f worker/Dockerfile .
 
-  zip_s3:
-    #name: Generate deployment package
-    # needs: build_docker_images
-    run: zip -r deploy.zip . -x '*.git*'
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
 
-  publish:
-      #name: Deploy to EB
+      - name: Deploy to EB
       #needs: zip_s3
-      uses: einaregilsson/beanstalk-deploy@v18
-      with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-        application_name:
-        environment_name:
-        existing_bucket_name: elasticbeanstalk-us-east-2-143174139415
-        region: us-east-2
-        version_label: ${{ github.sha }}
-        deployment_package: deploy.zip
+        uses: einaregilsson/beanstalk-deploy@v18
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name:
+            environment_name:
+              existing_bucket_name: elasticbeanstalk-us-east-2-143174139415
+              region: us-east-2
+              version_label: ${{ github.sha }}
+              deployment_package: deploy.zip
