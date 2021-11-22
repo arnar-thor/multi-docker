@@ -13,17 +13,17 @@ jobs:
       - run: docker build -t arnar-thor/multi-docker -f Dockerfile.dev .
       - run: docker run -e CI=true arnar-thor/multi-docker npm test
 
-  build_docker_images:
+  #build_docker_images:
     #name: createimages
     #needs: build_test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker build -t arnar-thor/multi-docker -f client/Dockerfile .
-      - run: docker build -t arnar-thor/multi-docker -f nginx/Dockerfile .
-      - run: docker build -t arnar-thor/multi-docker -f server/Dockerfile .
-      - run: docker build -t arnar-thor/multi-docker -f worker/Dockerfile .
+    #runs-on: ubuntu-latest
+    #steps:
+    #  - uses: actions/checkout@v2
+    #  - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+    #  - run: docker build -t arnar-thor/multi-docker -f client/Dockerfile .
+    #  - run: docker build -t arnar-thor/multi-docker -f nginx/Dockerfile .
+    #  - run: docker build -t arnar-thor/multi-docker -f server/Dockerfile .
+    #  - run: docker build -t arnar-thor/multi-docker -f worker/Dockerfile .
 
   zip_s3:
     #name: Generate deployment package
