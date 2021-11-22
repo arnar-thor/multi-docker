@@ -17,9 +17,10 @@ jobs:
         #run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         #run: docker build -t arnar-thor/multi-docker -f client/Dockerfile .
         steps:
-         - run: docker build -t arnar-thor/multi-docker -f nginx/Dockerfile .
-         - run: docker build -t arnar-thor/multi-docker -f server/Dockerfile .
-         - run: docker build -t arnar-thor/multi-docker -f worker/Dockerfile .
+          - uses: actions/checkout@v2
+          - run: docker build -t arnar-thor/multi-docker -f nginx/Dockerfile .
+          - run: docker build -t arnar-thor/multi-docker -f server/Dockerfile .
+          - run: docker build -t arnar-thor/multi-docker -f worker/Dockerfile .
 
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
